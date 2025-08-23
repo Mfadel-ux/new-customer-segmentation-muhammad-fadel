@@ -2,29 +2,23 @@ import streamlit as st
 import streamlit.components.v1 as stc
 import pickle
 
-# === Load Model ===
-model_filename = "logistic_regression_model.pkl"
-with open(model_filename, "rb") as file:
-    model = pickle.load(file)
-
-with open("features.pkl", "rb") as f:
-    feature_names = pickle.load(f)
-
-st.title("Customer Segmentation Prediction 🚀")
 import streamlit as st
 import pickle
 import pandas as pd
 
 # =====================
-# Load model
+# Load model & fitur
 # =====================
 with open("logistic_regression_model.pkl", "rb") as f:
     model = pickle.load(f)
 
+with open("features.pkl", "rb") as f:
+    feature_names = pickle.load(f)
+
 # =====================
 # Title
 # =====================
-st.title("Customer Segmentation Prediction")
+st.title("Customer Segmentation Prediction 🚀")
 st.write("Masukkan data pelanggan untuk memprediksi segmentasi.")
 
 # =====================
@@ -49,12 +43,10 @@ age_category = st.selectbox("Age Category", ["Remaja", "Dewasa", "Lansia"])
 # =====================
 # Encoding Input
 # =====================
-# Mapping categorical ke 0/1
 gender = 1 if gender == "Male" else 0
 ever_married = 1 if ever_married == "Yes" else 0
 graduated = 1 if graduated == "Yes" else 0
 
-# One-hot untuk profession
 profession_dict = {
     "Profession_Artist": 1 if profession == "Artist" else 0,
     "Profession_Doctor": 1 if profession == "Doctor" else 0,
@@ -67,14 +59,12 @@ profession_dict = {
     "Profession_Marketing": 1 if profession == "Marketing" else 0,
 }
 
-# One-hot untuk Spending Score
 spending_dict = {
     "Spending_Score_Average": 1 if spending_score == "Average" else 0,
     "Spending_Score_High": 1 if spending_score == "High" else 0,
     "Spending_Score_Low": 1 if spending_score == "Low" else 0,
 }
 
-# One-hot untuk Age Category
 age_dict = {
     "Age_Category_Remaja": 1 if age_category == "Remaja" else 0,
     "Age_Category_Dewasa": 1 if age_category == "Dewasa" else 0,
@@ -82,7 +72,7 @@ age_dict = {
 }
 
 # =====================
-# Buat DataFrame sesuai fitur model
+# Buat DataFrame
 # =====================
 input_data = pd.DataFrame([{
     "Gender": gender,
@@ -90,17 +80,15 @@ input_data = pd.DataFrame([{
     "Graduated": graduated,
     "Work_Experience": work_experience,
     "Family_Size": family_size,
-    "Var_1": var_1,  # kalau var_1 di training di-encode, pastikan mapping dulu
+    "Var_1": var_1,  # kalau di training di-encode, harus mapping juga
 
-    # One-hot profession
     **profession_dict,
-
-    # Spending Score
     **spending_dict,
-
-    # Age Category
     **age_dict,
 }])
+
+# ✅ Reindex agar sesuai fitur training
+input_data = input_data.reindex(columns=feature_names, fill_value=0)
 
 st.write("Data yang diproses:")
 st.dataframe(input_data)
@@ -118,4 +106,5 @@ if st.button("Prediksi Segmentasi"):
     st.subheader("Probabilitas Tiap Kelas")
     for i, prob in enumerate(prediction_proba):
         st.write(f"Segment {i}: {prob:.4f}")
+
 
