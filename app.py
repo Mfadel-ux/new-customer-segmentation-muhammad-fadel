@@ -7,6 +7,9 @@ model_filename = "logistic_regression_model.pkl"
 with open(model_filename, "rb") as file:
     model = pickle.load(file)
 
+with open("features.pkl", "rb") as f:
+    feature_names = pickle.load(f)
+
 st.title("Customer Segmentation Prediction 🚀")
 import streamlit as st
 import pickle
@@ -115,3 +118,4 @@ if st.button("Prediksi Segmentasi"):
     st.subheader("Probabilitas Tiap Kelas")
     for i, prob in enumerate(prediction_proba):
         st.write(f"Segment {i}: {prob:.4f}")
+
