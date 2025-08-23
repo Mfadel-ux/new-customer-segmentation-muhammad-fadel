@@ -2,48 +2,39 @@ import streamlit as st
 import streamlit.components.v1 as stc
 import pickle
 
-with open('Logistic_Regression_model.pkl', 'rb') as file:
-    Logistic_Regression_Model = pickle.load(file)
+# === Load Model ===
+model_filename = "logistic_regression_model.pkl"
+with open(model_filename, "rb") as file:
+    model = pickle.load(file)
 
-html_temp = """<div style="background-color:#000;padding:10px;border-radius:10px">
-                <h1 style="color:#fff;text-align:center">Loan Eligibility Prediction App</h1> 
-                <h4 style="color:#fff;text-align:center">Made for: Credit Team</h4> 
-                """
+st.title("Customer Segmentation Prediction 🚀")
+st.write("Aplikasi ini menggunakan **Logistic Regression** untuk memprediksi segmentasi customer.")
 
-desc_temp = """ ### Loan Prediction App 
-                This app is used by Credit team for deciding Loan Application
-                
-                #### Data Source
-                Kaggle: Link <Masukkan Link>
-                """
+# === Input User ===
+st.sidebar.header("Input Customer Data")
 
-def main():
-    stc.html(html_temp)
-    menu = ["Home", "Machine Learning App"]
-    choice = st.sidebar.selectbox("Menu", menu)
+# contoh input (sesuaikan dengan kolom datasetmu!)
+age = st.sidebar.number_input("Age", min_value=10, max_value=100, value=30)
+gender = st.sidebar.selectbox("Gender", ["Male", "Female"])
+annual_income = st.sidebar.number_input("Annual Income (k$)", min_value=0, max_value=200, value=50)
+spending_score = st.sidebar.number_input("Spending Score (1-100)", min_value=1, max_value=100, value=50)
 
-    if choice == "Home":
-        st.subheader("Home")
-        st.markdown(desc_temp, unsafe_allow_html=True)
-    elif choice == "Machine Learning App":
-        run_ml_app()
+# Buat dataframe dari input user
+input_data = pd.DataFrame({
+    "Age": [age],
+    "Gender": [1 if gender == "Male" else 0],  # contoh encoding
+    "Annual_Income": [annual_income],
+    "Spending_Score": [spending_score]
+})
 
-def run_ml_app():
-    design = """<div style="padding:15px;">
-                    <h1 style="color:#fff">Loan Eligibility Prediction</h1>
-                </div
-             """
-    st.markdown(design, unsafe_allow_html=True)
-    
+st.subheader("Input Data")
+st.write(input_data)
 
-    #If button is clilcked
-    pass
+# === Prediksi ===
+if st.button("Prediksi Segmentation"):
+    prediction = model.predict(input_data)
+    proba = model.predict_proba(input_data)
 
-def predict(gender, married, dependent, education, self_employed, applicant_income, coApplicant_income
-                         ,loan_amount, loan_amount_term, credit_history, property_area):
-    
-    #Making prediction
-    pass
-
-if __name__ == "__main__":
-    main()
+    st.success(f"Hasil Prediksi: **Segment {prediction[0]}**")
+    st.write("Probabilitas Tiap Segmen:")
+    st.write(pd.DataFrame(proba, columns=[f"Segment {i}" for i in range(proba.shape[1])]))
