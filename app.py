@@ -1,13 +1,9 @@
 import streamlit as st
-import streamlit.components.v1 as stc
-import pickle
-
-import streamlit as st
 import pickle
 import pandas as pd
 
 # =====================
-# Load model & fitur
+# Load model & feature names
 # =====================
 with open("logistic_regression_model.pkl", "rb") as f:
     model = pickle.load(f)
@@ -43,10 +39,23 @@ age_category = st.selectbox("Age Category", ["Remaja", "Dewasa", "Lansia"])
 # =====================
 # Encoding Input
 # =====================
+# Label Encoding manual
 gender = 1 if gender == "Male" else 0
 ever_married = 1 if ever_married == "Yes" else 0
 graduated = 1 if graduated == "Yes" else 0
 
+# Mapping Var_1 sesuai label encoding
+var1_mapping = {
+    "Cat_1": 0,
+    "Cat_2": 1,
+    "Cat_3": 2,
+    "Cat_4": 3,
+    "Cat_5": 4,
+    "Cat_6": 5,
+}
+var_1 = var1_mapping[var_1]
+
+# One-hot Profession
 profession_dict = {
     "Profession_Artist": 1 if profession == "Artist" else 0,
     "Profession_Doctor": 1 if profession == "Doctor" else 0,
@@ -59,12 +68,14 @@ profession_dict = {
     "Profession_Marketing": 1 if profession == "Marketing" else 0,
 }
 
+# One-hot Spending Score
 spending_dict = {
     "Spending_Score_Average": 1 if spending_score == "Average" else 0,
     "Spending_Score_High": 1 if spending_score == "High" else 0,
     "Spending_Score_Low": 1 if spending_score == "Low" else 0,
 }
 
+# One-hot Age Category
 age_dict = {
     "Age_Category_Remaja": 1 if age_category == "Remaja" else 0,
     "Age_Category_Dewasa": 1 if age_category == "Dewasa" else 0,
@@ -72,7 +83,7 @@ age_dict = {
 }
 
 # =====================
-# Buat DataFrame
+# Buat DataFrame sesuai fitur model
 # =====================
 input_data = pd.DataFrame([{
     "Gender": gender,
@@ -80,17 +91,17 @@ input_data = pd.DataFrame([{
     "Graduated": graduated,
     "Work_Experience": work_experience,
     "Family_Size": family_size,
-    "Var_1": var_1,  # kalau di training di-encode, harus mapping juga
+    "Var_1": var_1,
 
     **profession_dict,
     **spending_dict,
     **age_dict,
 }])
 
-# ✅ Reindex agar sesuai fitur training
+# Reindex agar sesuai fitur training
 input_data = input_data.reindex(columns=feature_names, fill_value=0)
 
-st.write("Data yang diproses:")
+st.write("🔎 Data yang diproses ke model:")
 st.dataframe(input_data)
 
 # =====================
@@ -100,11 +111,9 @@ if st.button("Prediksi Segmentasi"):
     prediction = model.predict(input_data)[0]
     prediction_proba = model.predict_proba(input_data)[0]
 
-    st.subheader("Hasil Prediksi")
+    st.subheader("🎯 Hasil Prediksi")
     st.write(f"**Segmentasi:** {prediction}")
 
-    st.subheader("Probabilitas Tiap Kelas")
+    st.subheader("📊 Probabilitas Tiap Kelas")
     for i, prob in enumerate(prediction_proba):
         st.write(f"Segment {i}: {prob:.4f}")
-
-
