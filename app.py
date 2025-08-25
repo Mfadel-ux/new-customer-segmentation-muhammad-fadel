@@ -11,9 +11,7 @@ with open("logistic_regression_model.pkl", "rb") as f:
 with open("features.pkl", "rb") as f:
     feature_names = pickle.load(f)
 
-
-
-
+# =====================
 # Custom CSS
 # =====================
 st.markdown("""
@@ -53,6 +51,7 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
+
 # =====================
 # Title
 # =====================
@@ -83,7 +82,6 @@ age_category = st.selectbox(
     help="Kategori umur pelanggan:\n- Remaja (13–25 tahun)\n- Dewasa (26–45 tahun)\n- Lansia (46 tahun ke atas)"
 )
 
-# Tambahkan penjelasan langsung di bawah form agar user mobile juga paham
 st.caption("ℹ️ **Remaja:** 13–25 tahun | **Dewasa:** 26–45 tahun | **Lansia:** 46 tahun ke atas")
 
 # =====================
@@ -154,30 +152,28 @@ input_data = input_data.reindex(columns=feature_names, fill_value=0)
 st.write("🔎 Data yang diproses ke model:")
 st.dataframe(input_data)
 
+# =====================
 # Mapping segmentasi ke deskripsi
 # =====================
 segment_desc = {
-    0: "Segmentation A",
-    1: "Segmentation B",
-    2: "Segmentation C",
-    3: "Segmentation D",
+    0: "Segment A",
+    1: "Segment B",
+    2: "Segment C",
+    3: "Segment D",
 }
+
 # =====================
 # Prediksi
 # =====================
-if st.button("Prediksi Segmentasi"):
+if st.button("🔮 Prediksi Segmentasi"):
     prediction = model.predict(input_data)[0]
     prediction_proba = model.predict_proba(input_data)[0]
 
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("🎯 Hasil Prediksi")
-    st.write(f"**Segmentasi:** {prediction}")
+    st.success(f"**Segmentasi:** {prediction} - {segment_desc[prediction]}")
 
     st.subheader("📊 Probabilitas Tiap Kelas")
     for i, prob in enumerate(prediction_proba):
         st.write(f"Segment {i}: {prob:.4f}")
-
-
-
-
-
-
+    st.markdown("</div>", unsafe_allow_html=True)
