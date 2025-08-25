@@ -34,7 +34,15 @@ profession = st.selectbox(
 )
 
 spending_score = st.selectbox("Spending Score", ["Average", "High", "Low"])
-age_category = st.selectbox("Age Category", ["Remaja", "Dewasa", "Lansia"])
+
+age_category = st.selectbox(
+    "Age Category",
+    ["Remaja", "Dewasa", "Lansia"],
+    help="Kategori umur pelanggan:\n- Remaja (13–25 tahun)\n- Dewasa (26–45 tahun)\n- Lansia (46 tahun ke atas)"
+)
+
+# Tambahkan penjelasan langsung di bawah form agar user mobile juga paham
+st.caption("ℹ️ **Remaja:** 13–25 tahun | **Dewasa:** 26–45 tahun | **Lansia:** 46 tahun ke atas")
 
 # =====================
 # Encoding Input
@@ -117,3 +125,4 @@ if st.button("Prediksi Segmentasi"):
     st.subheader("📊 Probabilitas Tiap Kelas")
     for i, prob in enumerate(prediction_proba):
         st.write(f"Segment {i}: {prob:.4f}")
+
