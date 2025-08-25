@@ -14,50 +14,45 @@ with open("features.pkl", "rb") as f:
 
 
 
-# Custom Page Config
+# Custom CSS
 # =====================
-st.set_page_config(
-    page_title="Customer Segmentation Prediction",
-    page_icon="🚀",
-    layout="centered",
-)
-# Custom CSS 
 st.markdown("""
     <style>
         .main {
-            background-color: #f9fafc;
-            padding: 20px;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
         }
-        .stButton>button {
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 12px;
-            padding: 10px 24px;
-            font-size: 16px;
-        }
-        .stButton>button:hover {
-            background-color: #45a049;
-        }
-        .title {
-            font-size: 32px;
-            font-weight: bold;
+        .stTitle {
+            font-size: 2.5rem !important;
             color: #2c3e50;
             text-align: center;
+            font-weight: bold;
         }
         .subtitle {
-            font-size: 16px;
-            color: #7f8c8d;
             text-align: center;
-            margin-bottom: 30px;
+            color: #6c757d;
+            margin-bottom: 2rem;
         }
-        .prediction {
-            font-size: 22px;
-            color: #2c3e50;
+        .stButton button {
+            background-color: #4CAF50;
+            color: white;
             font-weight: bold;
+            border-radius: 10px;
+            padding: 0.6rem 1.2rem;
+            border: none;
+        }
+        .stButton button:hover {
+            background-color: #45a049;
+        }
+        .card {
+            padding: 20px;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-top: 20px;
         }
     </style>
 """, unsafe_allow_html=True)
-
 # =====================
 # Title
 # =====================
@@ -172,5 +167,6 @@ if st.button("Prediksi Segmentasi"):
     st.subheader("📊 Probabilitas Tiap Kelas")
     for i, prob in enumerate(prediction_proba):
         st.write(f"Segment {i}: {prob:.4f}")
+
 
 
