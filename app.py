@@ -154,6 +154,14 @@ input_data = input_data.reindex(columns=feature_names, fill_value=0)
 st.write("🔎 Data yang diproses ke model:")
 st.dataframe(input_data)
 
+# Mapping segmentasi ke deskripsi
+# =====================
+segment_desc = {
+    0: "Segmentation A",
+    1: "Segmentation B",
+    2: "Segmentation C",
+    3: "Segmentation D",
+}
 # =====================
 # Prediksi
 # =====================
@@ -167,6 +175,7 @@ if st.button("Prediksi Segmentasi"):
     st.subheader("📊 Probabilitas Tiap Kelas")
     for i, prob in enumerate(prediction_proba):
         st.write(f"Segment {i}: {prob:.4f}")
+
 
 
 
