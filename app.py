@@ -11,6 +11,53 @@ with open("logistic_regression_model.pkl", "rb") as f:
 with open("features.pkl", "rb") as f:
     feature_names = pickle.load(f)
 
+
+
+
+# Custom Page Config
+# =====================
+st.set_page_config(
+    page_title="Customer Segmentation Prediction",
+    page_icon="🚀",
+    layout="centered",
+)
+# Custom CSS 
+st.markdown("""
+    <style>
+        .main {
+            background-color: #f9fafc;
+            padding: 20px;
+        }
+        .stButton>button {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 12px;
+            padding: 10px 24px;
+            font-size: 16px;
+        }
+        .stButton>button:hover {
+            background-color: #45a049;
+        }
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .subtitle {
+            font-size: 16px;
+            color: #7f8c8d;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .prediction {
+            font-size: 22px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # =====================
 # Title
 # =====================
@@ -125,4 +172,5 @@ if st.button("Prediksi Segmentasi"):
     st.subheader("📊 Probabilitas Tiap Kelas")
     for i, prob in enumerate(prediction_proba):
         st.write(f"Segment {i}: {prob:.4f}")
+
 
