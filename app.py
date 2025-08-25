@@ -57,6 +57,7 @@ st.markdown("""
 # Title
 # =====================
 st.title("Customer Segmentation Prediction 🚀")
+st.title("Made by Kelompok I DS-49")
 st.write("Masukkan data pelanggan untuk memprediksi segmentasi.")
 
 # =====================
@@ -167,6 +168,7 @@ if st.button("Prediksi Segmentasi"):
     st.subheader("📊 Probabilitas Tiap Kelas")
     for i, prob in enumerate(prediction_proba):
         st.write(f"Segment {i}: {prob:.4f}")
+
 
 
 
