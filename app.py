@@ -156,16 +156,16 @@ st.dataframe(input_data)
 # Mapping segmentasi ke deskripsi
 # =====================
 segment_desc = {
-    0: "Segment A",
-    1: "Segment B",
-    2: "Segment C",
-    3: "Segment D",
+    0: "A",
+    1: "B",
+    2: "C",
+    3: "D",
 }
 
 # =====================
 # Prediksi
 # =====================
-if st.button("🔮 Prediksi Segmentasi"):
+if st.button("Prediksi Segmentasi"):
     prediction = model.predict(input_data)[0]
     prediction_proba = model.predict_proba(input_data)[0]
 
@@ -177,3 +177,4 @@ if st.button("🔮 Prediksi Segmentasi"):
     for i, prob in enumerate(prediction_proba):
         st.write(f"Segment {i}: {prob:.4f}")
     st.markdown("</div>", unsafe_allow_html=True)
+
